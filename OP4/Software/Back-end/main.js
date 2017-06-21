@@ -9,24 +9,45 @@ if(process.argv[2] && process.argv[2] != '') {
     port = process.argv[2]
 }
 
+// Connects to the database
+let db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
 
-//Connects to the database
-var db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
 
-function getAllUnresponded(query, res, getter, callback) {
-    
+// Prepares the query to add the pin to the database
+function addPinResponse(req, res, next) {
+    let data = JSON.parse(req.body.toString());
+    let date = "21-6-2017"
+    let time = "15:05"
+    let query = 'CREATE (p:Pin { x: \'' + data['x'] + '\', y: \'' + data['y'] + '\', uuid: \'' + data['uuid'] + '\', date: \'' + date + '\', time: \'' + time + '\', responded: \'' + False +  '\'})'
+    addPin(query);
+    next();
 }
 
-//Executes a query on the database and returns the data to the original caller
-function filter(query, res, getter, callback) {
-    if(getter == undefined) {
-        getter = 'o';
-    }
-
-    db.cypher({
+// Adds the pin to the database
+function addPin(query) {
+    db.cyper({
         query: query
     }, function (err, results) {
+        if (err) throw err;
+    });
+}
 
+// Prepares the query to get the pins from the database
+function getPinsResponse(req, res, next, callback) {
+    var query = 'MATCH (p:Pin)'
+    if(req.params) {
+        query = 'MATCH (p:Pin { responded: \'' + req.params.responded + '\' })';
+    }
+
+    getPins(query, res, callback);
+    next();
+}
+
+// Gets the pins from the database
+function getPins(query, res, callback) {
+    db.cyper({
+        query: query
+    }, function (err, results) {
         if (err) throw err;
         var response = {
             length: results.length.toString()
@@ -48,32 +69,6 @@ function filter(query, res, getter, callback) {
     });
 }
 
-//Wishlist
-function viewWishListRespond(req, res, next) {
-    var data = JSON.parse(req.body.toString());
-    var query = 'MATCH (u:User { username: \'' + data['wishlistusername'] + '\'})-[:WISHES]-(c:Car) return c';
-    db.cypher({ query: query }, function(err, results) {
-        if(!results[0]) { //If the requested user's wishlist is not public, check if it is the logged in users' wishlist
-            query = 'MATCH (u:User { username: \'' + data['wishlistusername'] + '\', password: \'' + data['password'] + '\'})-[:WISHES]-(c:Car) return c';
-            db.cypher({ query: query}, function(err, results) {
-                if(results[0]) {
-                    var response = { length: results.length.toString() };
-                    for (var i = results.length - 1; i >= 0; i--) {
-                        response[i] = results[i]['c'];
-                    }
-                    res.send(200, response);
-                }
-            });
-        } else {
-            var response = { length: results.length.toString() };
-            for (var i = results.length - 1; i >= 0; i--) {
-                response[i] = results[i]['c'];
-            }
-            res.send(200, response);
-        }
-    });
-    next();
-}
 
 
 
@@ -86,8 +81,10 @@ server.use(restify.bodyParser());                                   // Used for 
 server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
 server.use(restify.CORS({ credentials: true }));                    // Used for allowing Access-Control-Allow-Origin
 
-server.get('/search/:value', searchRespond);                        // Allows users to search by make, model and year
-server.post('/wl', viewWishListRespond);                            // View the wishlist
+server.post('/pins/addPin', addPinResponse);                        // Add a new pin to the database
+
+server.get('/pins', getPinsResponse);                               // Return all pins
+server.get('/pins/:responded', getPinsResponse);                    // Return all pins that are unresponded (False) to or have been responded to (True)
 
 // Files are made accessible to the user, HTML index page is made default
 server.get(/.*/, restify.serveStatic({
