@@ -10,7 +10,49 @@
 	font-family: 'Titillium Web', sans-serif;
 }
 
+body, html {
+	height: 100%;
+}
+
 a {
 	color: black;
 	text-decoration:none;
+}
+
+#head {
+	width: 100vw;
+	background-color: rgb(255, 150, 0);
+	text-align: center;
+	height: 250px;
+}
+
+#logo {
+	height: 10em;
+}
+
+#buttonbar {
+	width: 100%;
+	display: inline-block;
+	padding: 20 0;
+	font-size: 2em;
+	text-align: center;
+}
+
+#buttonbar a {
+	padding: 5 5;
+}
+
+#buttonbar a:hover {
+	color: rgb(255, 150, 0);
+	border-radius: 10px;
+	background-color: black;
+}
+
+#view {
+	width: 100vw;
+}
+
+#map  {
+	width: 100vw;
+	height: calc(100% - 250px);
 }

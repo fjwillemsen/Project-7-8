@@ -1,6 +1,7 @@
 var neo4j = require('neo4j');
 var restify = require('restify');
 var md5 = require('md5');
+// var createServer = require("auto-sni");
 fs = require('fs');
 
 // Set the port number that's included in the launch arguments, if it is
@@ -76,6 +77,19 @@ function getPins(query, res, callback) {
 var server = restify.createServer({
     name: 'XtremeResQ'
 });
+
+// var server = restify.createServer({ name: 'XtremeResQ', version: '1.0.0' });
+
+// createServer({
+//     email: "0911853@hr.nl", // Emailed when certificates expire.
+//     agreeTos: true, // Required for letsencrypt.
+//     debug: true, // Add console messages and uses staging LetsEncrypt server. (Disable in production)
+//     domains: ["mysite.com", ["test.com", "www.test.com"]], // List of accepted domain names. (You can use nested arrays to register bundles with LE).
+//     ports: {
+//         http: 80, // Optionally override the default http port.
+//         https: 443 // // Optionally override the default https port.
+//     }
+// }, server.server);
 
 server.use(restify.bodyParser());                                   // Used for parsing the Request body
 server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL

@@ -1,25 +1,36 @@
 <html>
 <head>
-    <title>CarShop</title>
+    <title>XtremeResQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300" rel="stylesheet"/>
     <link rel="shortcut icon" type="image/x-icon" href="Visuals/favicon.ico"/>
     <link rel="stylesheet" href="style.css" />
 
-    <!--External Scripts-->
+    <!--Additional Scripts-->
     <script src="JS/external/jquery-3.1.1.min.js"></script>
     <script src="JS/external/Chart.min.js"></script>
 
     <!--Internal Script-->
     <script src="JS/script.js"></script>
+
+    <!-- External Scripts -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0P-kUZdXfC7Upou3ykZkf6Tn9mbtowe0&callback=initMap"></script>
 </head>
 
 <body>
+<div id="head">
+    <img id="logo" src="Visuals/Logo.png">
+    <div id="buttonbar">
+        <a>Map</a> -
+        <a>Overview</a> -
+        <a>Contact</a>
+    </div>
+</div>
 
 <div id="view">
-<div id="content">
-    <p>7268 Cars For Sale!<p>
-</div>
+    <div id="content">
+        <div id="map"></div>
+    </div>
 </div>
 
 </body>
