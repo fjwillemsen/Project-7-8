@@ -1,31 +1,76 @@
+
+// Required
+
+
 var neo4j = require('neo4j');
 var restify = require('restify');
 var md5 = require('md5');
+var moment = require('moment');
 // var createServer = require("auto-sni");
 fs = require('fs');
 
-// Set the port number that's included in the launch arguments, if it is
-var port = 8081;
-if(process.argv[2] && process.argv[2] != '') {
-    port = process.argv[2]
+
+
+
+    // Utility Functions
+
+
+// Returns YYYYMMDDHHmmSS formated DateTime
+function getDateTime() {
+    return moment(new Date()).format('YYYYMMDDHHmmSS');
 }
 
-// Connects to the database
-let db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
+    
+
+
+    // Query Parsers
+
+
+// Parses a Pin Create query
+function parsePin(lat, long, uuid) {
+    var query = 'CREATE (p:Pin { '
+    query += 'lat: ' + lat + ','
+    query += 'long: ' + long + ','
+    query += 'uuid: ' + uuid + ','
+    query += 'datetime: ' + getDateTime() + ','
+    query += 'responded: ' + false
+    return query + '})'
+}
+
+// Parses a Pin Responded
+function parseResponded(responded) {
+    return 'MATCH (p:Pin { responded: ' + responded + ' })';
+}
+
+
+
+
+    // Responders
 
 
 // Prepares the query to add the pin to the database
 function addPinResponse(req, res, next) {
     let data = JSON.parse(req.body.toString());
-    let date = "21-6-2017"
-    let time = "15:05"
-    let query = 'CREATE (p:Pin { x: \'' + data['x'] + '\', y: \'' + data['y'] + '\', uuid: \'' + data['uuid'] + '\', date: \'' + date + '\', time: \'' + time + '\', responded: \'' + False +  '\'})'
-    addPin(query);
+    let query = parsePin(data['lat', data['long'], data['uuid']]);
+    createData(query);
     next();
 }
 
-// Adds the pin to the database
-function addPin(query) {
+// Prepares the query to get the pins from the database
+function getPinsResponse(req, res, next, callback) {
+    let query = parseResponded(req.params.responded);
+    getData(query, res, callback);
+    next();
+}
+
+
+
+
+    // Database
+
+
+// Executes a Create-query
+function createData(query) {
     db.cyper({
         query: query
     }, function (err, results) {
@@ -33,19 +78,8 @@ function addPin(query) {
     });
 }
 
-// Prepares the query to get the pins from the database
-function getPinsResponse(req, res, next, callback) {
-    var query = 'MATCH (p:Pin)'
-    if(req.params) {
-        query = 'MATCH (p:Pin { responded: \'' + req.params.responded + '\' })';
-    }
-
-    getPins(query, res, callback);
-    next();
-}
-
-// Gets the pins from the database
-function getPins(query, res, callback) {
+// Gets data from the database using a query and returns a result as a list
+function getData(query, res, callback) {
     db.cyper({
         query: query
     }, function (err, results) {
@@ -72,6 +106,20 @@ function getPins(query, res, callback) {
 
 
 
+
+
+
+    // Server
+
+
+// Set the port number that's included in the launch arguments, if it is
+var port = 8081;
+if(process.argv[2] && process.argv[2] != '') {
+    port = process.argv[2]
+}
+
+// Connects to the database
+let db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
 
 // Start the server
 var server = restify.createServer({
