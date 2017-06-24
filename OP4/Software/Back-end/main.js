@@ -1,14 +1,17 @@
 
-// Required
-
-
-var neo4j = require('neo4j');
+    // Required
+var neo4j = require('node-neo4j');
 var restify = require('restify');
 var md5 = require('md5');
 var moment = require('moment');
 // var createServer = require("auto-sni");
 fs = require('fs');
 
+    // Connects to the database
+// let db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
+db = new neo4j('http://neo4j:project78Neo4j@localhost:7474'); 
+console.log(db);
+// setData(parsePin(51.75, 4.2, 3));
 
 
 
@@ -20,26 +23,32 @@ function getDateTime() {
     return moment(new Date()).format('YYYYMMDDHHmmSS');
 }
 
-    
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
 
 
     // Query Parsers
 
 
 // Parses a Pin Create query
-function parsePin(lat, long, uuid) {
+function parsePin(lat, long, udid) {
     var query = 'CREATE (p:Pin { '
     query += 'lat: ' + lat + ','
     query += 'long: ' + long + ','
-    query += 'uuid: ' + uuid + ','
+    query += 'udid: ' + udid + ','
     query += 'datetime: ' + getDateTime() + ','
     query += 'responded: ' + false
     return query + '})'
 }
 
 // Parses a Pin Responded
-function parseResponded(responded) {
-    return 'MATCH (p:Pin { responded: ' + responded + ' })';
+function parseResponded(args) {
+    if(!isEmpty(args)) {
+        return 'MATCH (p:Pin { responded: ' + args.responded + ' }) RETURN p';
+    } else {
+        return 'MATCH (p:Pin) RETURN p';
+    }
 }
 
 
@@ -52,13 +61,13 @@ function parseResponded(responded) {
 function addPinResponse(req, res, next) {
     let data = JSON.parse(req.body.toString());
     let query = parsePin(data['lat', data['long'], data['uuid']]);
-    createData(query);
+    setData(query);
     next();
 }
 
 // Prepares the query to get the pins from the database
 function getPinsResponse(req, res, next, callback) {
-    let query = parseResponded(req.params.responded);
+    let query = parseResponded(req.params);
     getData(query, res, callback);
     next();
 }
@@ -70,33 +79,33 @@ function getPinsResponse(req, res, next, callback) {
 
 
 // Executes a Create-query
-function createData(query) {
-    db.cyper({
-        query: query
-    }, function (err, results) {
-        if (err) throw err;
+function setData(query) {
+    db.cypherQuery(query, function(err, result) {
+        if(err) throw err;
     });
 }
 
 // Gets data from the database using a query and returns a result as a list
 function getData(query, res, callback) {
-    db.cyper({
-        query: query
-    }, function (err, results) {
+    db.cypherQuery(query, function (err, results) {
         if (err) throw err;
-        var response = {
-            length: results.length.toString()
-        };
+        let result = results.data;
 
-        var result = results[0];
-        if (!result) {
-            console.log('No object found.');
-            response = {ok: 'no'};
-            res.send(200, response);
+        if (result.length == 0) {
+            console.log('No object found for ' + query);
+            res.send(200, {ok: 'no'});
         } else {
-            for (var i = results.length - 1; i >= 0; i--) {
-                response[i] = results[i][getter];
+
+            let data = result[0];
+            var response = {
+                length: result.length
+            };
+
+            for (var i = result.length - 1; i >= 0; i--) {
+                response[i] = result[i];
             }
+
+            console.log(response);
 
             res.send(200, response);
             callback(response);
@@ -117,9 +126,6 @@ var port = 8081;
 if(process.argv[2] && process.argv[2] != '') {
     port = process.argv[2]
 }
-
-// Connects to the database
-let db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
 
 // Start the server
 var server = restify.createServer({
@@ -145,7 +151,7 @@ server.use(restify.CORS({ credentials: true }));                    // Used for 
 
 server.post('/pins/addPin', addPinResponse);                        // Add a new pin to the database
 
-server.get('/pins', getPinsResponse);                               // Return all pins
+server.get('/pins/', getPinsResponse);                               // Return all pins
 server.get('/pins/:responded', getPinsResponse);                    // Return all pins that are unresponded (False) to or have been responded to (True)
 
 // Files are made accessible to the user, HTML index page is made default
