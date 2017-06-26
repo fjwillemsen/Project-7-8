@@ -6,7 +6,7 @@ var restify = require('restify');
 
     // Connects to the database
 // var db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
-var db = new neo4j('http://neo4j:project78Neo4j@localhost:7474'); 
+var db = new neo4j('http://neo4j:neo4j@localhost:7474'); 
 console.log(db);
 // setData(parsePin(51.75, 4.2, 3));
 
