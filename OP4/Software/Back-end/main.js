@@ -63,9 +63,9 @@ function addPinResponse(req, res, next) {
 }
 
 // Prepares the query to get the pins from the database
-function getPinsResponse(req, res, next, callback) {
+function getPinsResponse(req, res, next) {
     var query = parseResponded(req.params);
-    getData(query, res, callback);
+    getData(query, res);
     next();
 }
 
@@ -83,7 +83,7 @@ function setData(query) {
 }
 
 // Gets data from the database using a query and returns a result as a list
-function getData(query, res, callback) {
+function getData(query, res) {
     db.cypherQuery(query, function (err, results) {
         if (err) throw err;
         var result = results.data;
@@ -103,9 +103,7 @@ function getData(query, res, callback) {
             }
 
             console.log(response);
-
             res.send(200, response);
-            callback(response);
         }
     });
 }
