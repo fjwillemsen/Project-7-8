@@ -2,14 +2,11 @@
     // Required
 var neo4j = require('node-neo4j');
 var restify = require('restify');
-var md5 = require('md5');
-var moment = require('moment');
 // var createServer = require("auto-sni");
-fs = require('fs');
 
     // Connects to the database
-// let db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
-db = new neo4j('http://neo4j:project78Neo4j@localhost:7474'); 
+// var db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
+var db = new neo4j('http://neo4j:project78Neo4j@localhost:7474'); 
 console.log(db);
 // setData(parsePin(51.75, 4.2, 3));
 
@@ -59,15 +56,15 @@ function parseResponded(args) {
 
 // Prepares the query to add the pin to the database
 function addPinResponse(req, res, next) {
-    let data = JSON.parse(req.body.toString());
-    let query = parsePin(data['lat', data['long'], data['uuid']]);
+    var data = JSON.parse(req.body.toString());
+    var query = parsePin(data['lat', data['long'], data['uuid']]);
     setData(query);
     next();
 }
 
 // Prepares the query to get the pins from the database
 function getPinsResponse(req, res, next, callback) {
-    let query = parseResponded(req.params);
+    var query = parseResponded(req.params);
     getData(query, res, callback);
     next();
 }
@@ -89,14 +86,14 @@ function setData(query) {
 function getData(query, res, callback) {
     db.cypherQuery(query, function (err, results) {
         if (err) throw err;
-        let result = results.data;
+        var result = results.data;
 
         if (result.length == 0) {
             console.log('No object found for ' + query);
             res.send(200, {ok: 'no'});
         } else {
 
-            let data = result[0];
+            var data = result[0];
             var response = {
                 length: result.length
             };
