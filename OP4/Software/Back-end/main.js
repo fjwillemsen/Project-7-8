@@ -3,6 +3,9 @@ var neo4j = require('node-neo4j');
 var restify = require('restify');
 fs = require('fs');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";     // Temporary fix to allow self-signed certificates (not very secure), avoids "DEPTH_ZERO_SELF_SIGNED_CERT"
+process.on('uncaughtException', function (err) {    // Catch all Exceptions here to avoid crashing, log them instead
+  console.log('Caught exception: ' + err.stack);
+});
 
     // Connects to the database
 // var db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
