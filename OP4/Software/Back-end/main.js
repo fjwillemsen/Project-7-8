@@ -2,6 +2,7 @@
 var neo4j = require('node-neo4j');
 var restify = require('restify');
 fs = require('fs');
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";     // Temporary fix to allow self-signed certificates (not very secure), avoids "DEPTH_ZERO_SELF_SIGNED_CERT"
 
     // Connects to the database
 // var db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
@@ -68,13 +69,6 @@ function getPinsResponse(req, res, next) {
     next();
 }
 
-function pageResponse(req, res, next) {
-    console.log('req: ' + req + '\nres: ' + res + '\nnext: ' + next);
-    res.send(200, 'This is a page');
-    next();
-}
-
-
 
 
     // Database
@@ -84,10 +78,18 @@ function pageResponse(req, res, next) {
 function setData(query, res) {
     db.cypherQuery(query, function(err, result) {
         if(err) {
-            res.send(200, {ok: 'no', error: err});
-            throw err;
-        } else {
-            res.send(200, {ok: 'yes'});
+            res.send(200, {
+                ok: 'no',
+                query: query,
+                error: err
+            }); throw err;
+        } 
+
+        else {
+            res.send(200, {
+                ok: 'yes',
+                query: query
+            });
         }
     });
 }
@@ -96,21 +98,27 @@ function setData(query, res) {
 function getData(query, res) {
     db.cypherQuery(query, function (err, results) {
         if(err) {
-            res.send(200, {ok: 'no', error: err});
-            throw err;
-        } else {
-            res.send(200, {ok: 'yes'});
+            res.send(200, {
+                ok: 'no',
+                query: query,
+                error: err
+            }); throw err;
         }
 
         var result = results.data;
 
         if (result.length == 0) {
-            console.log('No object found for ' + query);
-            res.send(200, {ok: 'no'});
+            res.send(200, {
+                ok: 'no',
+                query: query,
+                error: err
+            }); throw err;
         } else {
 
             var data = result[0];
             var response = {
+                ok: 'yes',
+                query: query,
                 length: result.length
             };
 
@@ -118,7 +126,6 @@ function getData(query, res) {
                 response[i] = result[i];
             }
 
-            console.log(response);
             res.send(200, response);
         }
     });
@@ -154,7 +161,6 @@ server.post('/pins/addPin', addPinResponse);                        // Add a new
 
 server.get('/pins/', getPinsResponse);                              // Return all pins
 server.get('/pins/:responded', getPinsResponse);                    // Return all pins that are unresponded (False) to or have been responded to (True)
-server.get('/page', pageResponse);
 server.get(/.*/, restify.serveStatic({                              // Files are made accessible to the user, HTML index page is made default
     'directory': __dirname + '/../Front-end/',
     'default': 'index.html'
