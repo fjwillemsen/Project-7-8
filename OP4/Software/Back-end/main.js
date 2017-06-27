@@ -68,6 +68,12 @@ function getPinsResponse(req, res, next) {
     next();
 }
 
+function pageResponse(req, res, next) {
+    console.log('req: ' + req + '\nres: ' + res + '\nnext: ' + next);
+    res.send(200, 'This is a page');
+    next();
+}
+
 
 
 
@@ -137,6 +143,7 @@ server.post('/pins/addPin', addPinResponse);                        // Add a new
 
 server.get('/pins/', getPinsResponse);                              // Return all pins
 server.get('/pins/:responded', getPinsResponse);                    // Return all pins that are unresponded (False) to or have been responded to (True)
+server.get('/page', pageResponse);
 server.get(/.*/, restify.serveStatic({                              // Files are made accessible to the user, HTML index page is made default
     'directory': __dirname + '/../Front-end/',
     'default': 'index.html'
