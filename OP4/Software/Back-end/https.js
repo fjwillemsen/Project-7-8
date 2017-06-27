@@ -2,8 +2,8 @@ var restify = require('restify');
 fs = require('fs');
 
 var https_options = {
-  key: fs.readFileSync('/var/www/project78/.well-known/acme-challenge/yourdomain.key'),
-  certificate: fs.readFileSync('/var/www/project78/.well-known/acme-challenge/yourdomain.csr')
+  key: fs.readFileSync('key.pem', 'utf8'),
+  certificate: fs.readFileSync('server.crt', 'utf8')
 };
 var https_server = restify.createServer(https_options);
 
