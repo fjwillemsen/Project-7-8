@@ -2,11 +2,10 @@
 var neo4j = require('node-neo4j');
 var restify = require('restify');
 fs = require('fs');
-// var createServer = require("auto-sni");
 
     // Connects to the database
 // var db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
-var db = new neo4j('http://neo4j:neo4j@localhost:7474'); 
+var db = new neo4j('https://neo4j:neo4j@localhost:7473'); 
 console.log(db);
 // setData(parsePin(51.75, 4.2, 3));
 
@@ -124,29 +123,19 @@ if(process.argv[2] && process.argv[2] != '') {
 
 // Start the server
 var server = restify.createServer({
-    name: 'XtremeResQ'
+    name: 'XtremeResQ',
+    key: fs.readFileSync('/var/www/project78/.well-known/acme-challenge/key.pem', 'utf8'),
+    certificate: fs.readFileSync('/var/www/project78/.well-known/acme-challenge/server.crt', 'utf8')
 });
 
-// var server = restify.createServer({ name: 'XtremeResQ', version: '1.0.0' });
-
-// createServer({
-//     email: "0911853@hr.nl", // Emailed when certificates expire.
-//     agreeTos: true, // Required for letsencrypt.
-//     debug: true, // Add console messages and uses staging LetsEncrypt server. (Disable in production)
-//     domains: ["mysite.com", ["test.com", "www.test.com"]], // List of accepted domain names. (You can use nested arrays to register bundles with LE).
-//     ports: {
-//         http: 80, // Optionally override the default http port.
-//         https: 443 // // Optionally override the default https port.
-//     }
-// }, server.server);
-
+server.use(restify.acceptParser(server.acceptable));
 server.use(restify.bodyParser());                                   // Used for parsing the Request body
 server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
 server.use(restify.CORS({ credentials: true }));                    // Used for allowing Access-Control-Allow-Origin
 
 server.post('/pins/addPin', addPinResponse);                        // Add a new pin to the database
 
-server.get('/pins/', getPinsResponse);                               // Return all pins
+server.get('/pins/', getPinsResponse);                              // Return all pins
 server.get('/pins/:responded', getPinsResponse);                    // Return all pins that are unresponded (False) to or have been responded to (True)
 
 // Files are made accessible to the user, HTML index page is made default
