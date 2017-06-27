@@ -1,7 +1,7 @@
-
     // Required
 var neo4j = require('node-neo4j');
 var restify = require('restify');
+fs = require('fs');
 // var createServer = require("auto-sni");
 
     // Connects to the database
