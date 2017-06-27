@@ -137,9 +137,7 @@ server.post('/pins/addPin', addPinResponse);                        // Add a new
 
 server.get('/pins/', getPinsResponse);                              // Return all pins
 server.get('/pins/:responded', getPinsResponse);                    // Return all pins that are unresponded (False) to or have been responded to (True)
-
-// Files are made accessible to the user, HTML index page is made default
-server.get(/.*/, restify.serveStatic({
+server.get(/.*/, restify.serveStatic({                              // Files are made accessible to the user, HTML index page is made default
     'directory': __dirname + '/../Front-end/',
     'default': 'index.html'
 }));
