@@ -57,7 +57,7 @@ function parseResponded(args) {
 function addPinResponse(req, res, next) {
     var data = JSON.parse(req.body.toString());
     var query = parsePin(data['lat', data['long'], data['uuid']]);
-    setData(query);
+    setData(query, res);
     next();
 }
 
@@ -81,16 +81,27 @@ function pageResponse(req, res, next) {
 
 
 // Executes a Create-query
-function setData(query) {
+function setData(query, res) {
     db.cypherQuery(query, function(err, result) {
-        if(err) throw err;
+        if(err) {
+            res.send(200, {ok: 'no', error: err});
+            throw err;
+        } else {
+            res.send(200, {ok: 'yes'});
+        }
     });
 }
 
 // Gets data from the database using a query and returns a result as a list
 function getData(query, res) {
     db.cypherQuery(query, function (err, results) {
-        if (err) throw err;
+        if(err) {
+            res.send(200, {ok: 'no', error: err});
+            throw err;
+        } else {
+            res.send(200, {ok: 'yes'});
+        }
+
         var result = results.data;
 
         if (result.length == 0) {
