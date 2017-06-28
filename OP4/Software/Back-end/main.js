@@ -19,6 +19,23 @@ driver.onError = function (error) {
   console.log('Neo4j driver instantiation failed', error);
 };
 
+function addPin(data, deviceId) {
+    var session = driver.session();
+    session
+      .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: deviceId, datetime: getDateTime()})
+      .subscribe({
+        onNext: function (record) {
+          console.log(record.get('lat'));
+        },
+        onCompleted: function () {
+          session.close();
+        },
+        onError: function (error) {
+          console.log(error);
+        }
+    });
+}
+ 
 
 
     // Utility Functions
@@ -78,20 +95,6 @@ function getPinsResponse(req, res, next) {
     getData(query, res);
     return next();
 }
-
-function addPin(data, deviceId) {
-    var query = parsePin(data.lat, data.long, deviceId);
-    db.cypherQuery(query, function(err, result) {
-        console.log("Add pin: " + query);
-        if(err) {
-            console.log(err);
-            throw err;
-        } else {
-            console.log("Success");
-        }
-    });
-}
-
 
 
     // Database
