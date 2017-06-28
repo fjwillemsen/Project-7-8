@@ -137,7 +137,7 @@ function getData(query, res) {
 }
 
 var region = 'eu';
-var appID = '70B3D57EF0005FA6';
+var appID = 'sosbutton';
 var accessKey = 'ttn-account-v2._OUW0ngQcd2i81hAvn6deR3gKj_RIPTQ-U8RvWf5pRk';
 var client = new ttn.Client(region, appID, accessKey);
 
@@ -147,6 +147,10 @@ client.on('connect', function(connack) {
     
 client.on('error', function(err) {
     console.error('[ERROR]', err.message);
+});
+
+client.on('message', function(deviceId, data) {
+    console.info('[INFO] ', 'Message:', deviceId, JSON.stringify(data, null, 2));
 });
 
 
