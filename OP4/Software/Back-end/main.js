@@ -164,10 +164,10 @@ server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS({ credentials: true }));                    // Used for allowing Access-Control-Allow-Origin
 
 server.post('/add/pins', addPinResponse);                           // Add a new pin to the database
-server.post("/testpost", function(request, response, next) {
-    console.log(request.body);
-    console.log(request.params);
-    res.send(200, request);
+server.post("/testpost", function(req, res, next) {
+    console.log(req.body);
+    console.log(req.params);
+    res.send(200, req);
 });
 
 server.get('/get/pins/', getPinsResponse);                          // Return all pins
