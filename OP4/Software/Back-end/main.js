@@ -1,5 +1,5 @@
     // Required
-var neo4j = require('node-neo4j');
+var neo4j = require('neo4j-driver').v1;
 var restify = require('restify');
 var moment = require('moment');
 var ttn = require('ttn');
@@ -11,10 +11,13 @@ process.on('uncaughtException', function (err) {    // Catch all Exceptions here
 });
 
     // Connects to the database
-// var db = new neo4j.GraphDatabase('http://neo4j:gZb-AFF-82n-CVo@145.24.222.132:80');
-var db = new neo4j('https://neo4j:neo4j@localhost:7473'); 
-console.log(db);
-// setData(parsePin(51.75, 4.2, 3));
+var driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("neo4j", "neo4j"));
+driver.onCompleted = function () {
+  console.log(driver);
+};
+driver.onError = function (error) {
+  console.log('Neo4j driver instantiation failed', error);
+};
 
 
 
@@ -42,7 +45,7 @@ function parsePin(lat, long, udid) {
     query += 'udid: ' + udid + ','
     query += 'datetime: ' + getDateTime() + ','
     query += 'responded: ' + false
-    return query + '})'
+    return query + '}) RETURN p;'
 }
 
 // Parses a Pin Responded
