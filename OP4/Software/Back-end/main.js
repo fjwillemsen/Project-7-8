@@ -138,7 +138,7 @@ function getData(query, res) {
 
 
 var appEUI = '70B3D57EF0005FA6';
-var accessKey = 'F0E5A2E5B9ECE3BCB7B9075F20A58EBB';
+var accessKey = 'ttn-account-v2._OUW0ngQcd2i81hAvn6deR3gKj_RIPTQ-U8RvWf5pRk';
 var client = new ttn.Client('staging.thethingsnetwork.org', appEUI, accessKey);
 var message=[];
 client.on('uplink', function (msg) {
