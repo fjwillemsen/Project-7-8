@@ -136,6 +136,10 @@ function getData(query, res) {
     });
 }
 
+
+
+    // LoRa Receiver
+    
 var region = 'eu';
 var appID = 'sosbutton';
 var accessKey = 'ttn-account-v2._OUW0ngQcd2i81hAvn6deR3gKj_RIPTQ-U8RvWf5pRk';
@@ -151,6 +155,8 @@ client.on('error', function(err) {
 
 client.on('message', function(deviceId, data) {
     console.info('[INFO] ', 'Message:', deviceId, JSON.stringify(data, null, 2));
+    console.log(deviceId);
+    console.log(data.payload_raw.data);
 });
 
 
