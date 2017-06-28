@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "fs": "0.0.1-security",
-    "node-neo4j": "^2.0.3"
+    "node-neo4j": "^2.0.3",
+    "software": "file:.."
   }
 }
