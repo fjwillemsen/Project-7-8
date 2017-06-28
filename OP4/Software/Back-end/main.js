@@ -159,7 +159,7 @@ var server = restify.createServer({
 server.use(restify.authorizationParser());
 server.use(restify.bodyParser());                                   // Used for parsing the Request body
 server.use(restify.urlEncodedBodyParser());
-server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
+// server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS({ credentials: true }));                    // Used for allowing Access-Control-Allow-Origin
 
