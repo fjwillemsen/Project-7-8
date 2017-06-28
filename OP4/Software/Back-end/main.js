@@ -60,7 +60,7 @@ function parseResponded(args) {
 // Prepares the query to add the pin to the database
 function addPinResponse(req, res, next) {
     var data = JSON.parse(req.body.toString());
-    var query = parsePin(data['lat', data['long'], data['uuid']]);
+    var query = parsePin(data['lat'], data['long'], data['uuid']);
     setData(query, res);
     next();
 }
