@@ -167,6 +167,7 @@ server.post('/add/pins', addPinResponse);                           // Add a new
 server.post("/testpost", function(request, response, next) {
     console.log(request.body);
     console.log(request.params);
+    res.send(200, request);
 });
 
 server.get('/get/pins/', getPinsResponse);                          // Return all pins
