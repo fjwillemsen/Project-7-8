@@ -1,5 +1,5 @@
 cd OP4/Software/Back-end
-pm2 stop all
-pm2 delete all
-pm2 start main.js -i max --watch
-pm2 show main
+/usr/local/lib/node_modules/pm2 stop all
+/usr/local/lib/node_modules/pm2 delete all
+/usr/local/lib/node_modules/pm2 start main.js -i max --watch
+/usr/local/lib/node_modules/pm2 show main
