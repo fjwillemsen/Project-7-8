@@ -164,7 +164,7 @@ server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS({ credentials: true }));                    // Used for allowing Access-Control-Allow-Origin
 
 server.post('/add/pins', addPinResponse);                           // Add a new pin to the database
-server.post("testpost", function(request, response, next) {
+server.post("/testpost", function(request, response, next) {
     console.log(req.body);
     console.log(req.params);
 });
