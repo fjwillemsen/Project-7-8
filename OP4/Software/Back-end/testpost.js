@@ -1,5 +1,5 @@
 $.ajax({
-    url: "https://xtremeresq.ddns.net:8082/testpost",
+    url: "https://xtremeresq.ddns.net:8082/add/pins",
     type: "POST",
     data: {
         blob: {wob:"1",job:"2", ar:[1,2,{a:'b'}]}
@@ -10,8 +10,8 @@ $.ajax({
     success: function(data) {
         console.log(data);
     },
-    error: function() { 
-        console.log("error");
+    error: function(err) { 
+        console.log(err);
     }
 });
 console.log("done");

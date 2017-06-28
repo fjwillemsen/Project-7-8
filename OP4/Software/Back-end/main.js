@@ -59,17 +59,18 @@ function parseResponded(args) {
 
 // Prepares the query to add the pin to the database
 function addPinResponse(req, res, next) {
-    var data = JSON.parse(req.body.toString());
-    var query = parsePin(data['lat'], data['long'], data['uuid']);
+    console.log(req.params);
+    var data = req.params;
+    var query = parsePin(data.lat, data.long, data.uuid);
     setData(query, res);
-    next();
+    return next();
 }
 
 // Prepares the query to get the pins from the database
 function getPinsResponse(req, res, next) {
     var query = parseResponded(req.params);
     getData(query, res);
-    next();
+    return next();
 }
 
 
@@ -157,21 +158,14 @@ var server = restify.createServer({
 
 server.use(restify.authorizationParser());
 server.use(restify.bodyParser());                                   // Used for parsing the Request body
-// server.use(restify.urlEncodedBodyParser());
-// server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
 server.use(restify.acceptParser(server.acceptable));
-server.use(restify.CORS());                    // Used for allowing Access-Control-Allow-Origin
+server.use(restify.CORS());                                         // Used for allowing Access-Control-Allow-Origin
 
 server.post('/add/pins', addPinResponse);                           // Add a new pin to the database
-server.post("/testpost", function(req, res, next) {
-    res.setHeader('content-type', 'application/x-www-form-urlencoded');
+server.post("/testpost", function(req, res, next) {                 // Test a post-endpoint
     console.log(req.body);
     console.log(req.params);
-    res.send(200, {
-        ok: 'no',
-        query: '',
-        error: ''
-    });
+    res.send(200, { ok: 'yes' });
 });
 
 server.get('/get/pins/', getPinsResponse);                          // Return all pins
