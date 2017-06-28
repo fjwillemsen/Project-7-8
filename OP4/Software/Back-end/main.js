@@ -160,10 +160,10 @@ server.use(restify.bodyParser());                                   // Used for 
 server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
 server.use(restify.CORS({ credentials: true }));                    // Used for allowing Access-Control-Allow-Origin
 
-server.post('/pins/addPin', addPinResponse);                        // Add a new pin to the database
+server.post('/add/pins', addPinResponse);                        // Add a new pin to the database
 
-server.get('/pins/', getPinsResponse);                              // Return all pins
-server.get('/pins/:responded', getPinsResponse);                    // Return all pins that are unresponded (False) to or have been responded to (True)
+server.get('/get/pins/', getPinsResponse);                              // Return all pins
+server.get('/get/pins/:responded', getPinsResponse);                    // Return all pins that are unresponded (False) to or have been responded to (True)
 server.get(/.*/, restify.serveStatic({                              // Files are made accessible to the user, HTML index page is made default
     'directory': __dirname + '/../Front-end/',
     'default': 'index.html'
