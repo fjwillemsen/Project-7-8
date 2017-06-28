@@ -137,7 +137,7 @@ function getData(query, res) {
 }
 
 var region = 'eu';
-var appID = 'sosbutton';
+var appID = '70B3D57EF0005FA6';
 var accessKey = 'ttn-account-v2._OUW0ngQcd2i81hAvn6deR3gKj_RIPTQ-U8RvWf5pRk';
 var client = new ttn.Client(region, appID, accessKey);
 
