@@ -6,7 +6,7 @@ function initMap() {
     $.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?') 
     .done (function(location) {
 
-        let url = 'https://' + ip + ':' + port + '/get/pins';
+        let url = 'https://' + ip + ':' + port + '/get/pins'; 
         $.get(url, function(data) {
 
             let coords = new google.maps.LatLng(location.latitude, location.longitude);
