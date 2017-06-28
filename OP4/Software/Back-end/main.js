@@ -156,12 +156,18 @@ var server = restify.createServer({
     certificate: fs.readFileSync('/var/www/project78/.well-known/acme-challenge/server.crt', 'utf8')
 });
 
-server.use(restify.acceptParser(server.acceptable));
+server.use(restify.authorizationParser());
 server.use(restify.bodyParser());                                   // Used for parsing the Request body
+server.use(restify.urlEncodedBodyParser());
 server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
+server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS({ credentials: true }));                    // Used for allowing Access-Control-Allow-Origin
 
 server.post('/add/pins', addPinResponse);                           // Add a new pin to the database
+server.post("testpost", function(request, response, next) {
+    console.log(req.body);
+    console.log(req.params);
+});
 
 server.get('/get/pins/', getPinsResponse);                          // Return all pins
 server.get('/get/pins/:responded', getPinsResponse);                // Return all pins that are unresponded (False) to or have been responded to (True)
