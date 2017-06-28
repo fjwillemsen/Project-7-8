@@ -136,10 +136,10 @@ function getData(query, res) {
     });
 }
 
-
-var appEUI = '70B3D57EF0005FA6';
+var region = 'eu';
+var appID = 'sosbutton';
 var accessKey = 'ttn-account-v2._OUW0ngQcd2i81hAvn6deR3gKj_RIPTQ-U8RvWf5pRk';
-var client = new ttn.Client('staging.thethingsnetwork.org', appEUI, accessKey);
+var client = new ttn.Client(region, appID, accessKey);
 var message=[];
 client.on('uplink', function (msg) {
   console.log('Received message: ', msg);
