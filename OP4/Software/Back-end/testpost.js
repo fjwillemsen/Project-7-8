@@ -1,6 +1,5 @@
 $.ajax({
     url: "https://xtremeresq.ddns.net:8082/testpost",
-    async: false,
     type: "POST",
     data: {
         blob: {wob:"1",job:"2", ar:[1,2,{a:'b'}]}

@@ -166,8 +166,6 @@ server.use(restify.CORS({ credentials: true }));                    // Used for 
 server.post('/add/pins', addPinResponse);                           // Add a new pin to the database
 server.post("/testpost", function(req, res, next) {
     res.setHeader('content-type', 'application/x-www-form-urlencoded');
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
     console.log(req.body);
     console.log(req.params);
     res.send(200, req);
