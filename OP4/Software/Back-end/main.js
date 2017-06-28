@@ -140,9 +140,13 @@ var region = 'eu';
 var appID = 'sosbutton';
 var accessKey = 'ttn-account-v2._OUW0ngQcd2i81hAvn6deR3gKj_RIPTQ-U8RvWf5pRk';
 var client = new ttn.Client(region, appID, accessKey);
-var message=[];
-client.on('uplink', function (msg) {
-  console.log('Received message: ', msg);
+
+client.on('connect', function(connack) {
+    console.log('[DEBUG]', 'Connect:', connack);
+});
+    
+client.on('error', function(err) {
+    console.error('[ERROR]', err.message);
 });
 
 
