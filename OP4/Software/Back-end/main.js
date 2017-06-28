@@ -59,7 +59,6 @@ function parseResponded(args) {
 
 // Prepares the query to add the pin to the database
 function addPinResponse(req, res, next) {
-    console.log(req);
     var data = JSON.parse(req.body.toString());
     var query = parsePin(data['lat'], data['long'], data['uuid']);
     setData(query, res);
@@ -158,7 +157,7 @@ var server = restify.createServer({
 
 server.use(restify.authorizationParser());
 server.use(restify.bodyParser());                                   // Used for parsing the Request body
-server.use(restify.urlEncodedBodyParser());
+// server.use(restify.urlEncodedBodyParser());
 // server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS());                    // Used for allowing Access-Control-Allow-Origin
@@ -168,7 +167,11 @@ server.post("/testpost", function(req, res, next) {
     res.setHeader('content-type', 'application/x-www-form-urlencoded');
     console.log(req.body);
     console.log(req.params);
-    res.send(200, req);
+    res.send(200, {
+        ok: 'no',
+        query: '',
+        error: ''
+    });
 });
 
 server.get('/get/pins/', getPinsResponse);                          // Return all pins
