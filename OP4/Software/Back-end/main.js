@@ -161,7 +161,7 @@ server.use(restify.bodyParser());                                   // Used for 
 server.use(restify.urlEncodedBodyParser());
 // server.use(restify.queryParser());                                  // Used for allowing "?variable=value" in the URL
 server.use(restify.acceptParser(server.acceptable));
-server.use(restify.CORS({ credentials: true }));                    // Used for allowing Access-Control-Allow-Origin
+server.use(restify.CORS());                    // Used for allowing Access-Control-Allow-Origin
 
 server.post('/add/pins', addPinResponse);                           // Add a new pin to the database
 server.post("/testpost", function(req, res, next) {
