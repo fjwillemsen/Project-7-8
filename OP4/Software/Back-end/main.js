@@ -156,6 +156,10 @@ client.on('error', function(err) {
 client.on('message', function(deviceId, data) {
     console.info('[INFO] ', 'Message:', deviceId, JSON.stringify(data, null, 2));
     console.log(deviceId);
+    var payload_raw = new Buffer(data.payload_raw, 'base64').toString()
+    console.log(payload_raw);
+    var payload = JSON.parse(payload_raw.replace(/\\"/g, '"'));
+    console.log(payload);
     console.log(new Buffer(data.payload_raw, 'base64').toString());
 });
 
