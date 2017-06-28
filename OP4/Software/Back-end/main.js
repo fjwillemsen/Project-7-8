@@ -1,6 +1,7 @@
     // Required
 var neo4j = require('node-neo4j');
 var restify = require('restify');
+var ttn = require('ttn');
 fs = require('fs');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";     // Temporary fix to allow self-signed certificates (not very secure), avoids "DEPTH_ZERO_SELF_SIGNED_CERT"
 process.on('uncaughtException', function (err) {    // Catch all Exceptions here to avoid crashing, log them instead
@@ -136,6 +137,13 @@ function getData(query, res) {
 }
 
 
+var appEUI = '70B3D57EF0005FA6';
+var accessKey = 'F0E5A2E5B9ECE3BCB7B9075F20A58EBB';
+var client = new ttn.Client('staging.thethingsnetwork.org', appEUI, accessKey);
+var message=[];
+client.on('uplink', function (msg) {
+  console.log('Received message: ', msg);
+});
 
 
 

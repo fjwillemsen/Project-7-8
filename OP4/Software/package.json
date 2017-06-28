@@ -12,6 +12,7 @@
     "fs": "0.0.1-security",
     "https": "^1.0.0",
     "node-neo4j": "^2.0.3",
-    "restify": "^4.3.0"
+    "restify": "^4.3.0",
+    "ttn": "^2.1.1"
   }
 }
