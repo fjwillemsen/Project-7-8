@@ -74,6 +74,19 @@ function getPinsResponse(req, res, next) {
     return next();
 }
 
+function addPin(data, deviceId) {
+    var query = parsePin(data.lat, data.long, deviceId);
+    db.cypherQuery(query, function(err, result) {
+        console.log("Add pin: " + query);
+        if(err) {
+            console.log(err);
+            throw err;
+        } else {
+            console.log("Success");
+        }
+    });
+}
+
 
 
     // Database
@@ -157,10 +170,9 @@ client.on('message', function(deviceId, data) {
     console.info('[INFO] ', 'Message:', deviceId, JSON.stringify(data, null, 2));
     console.log(deviceId);
     var payload_raw = new Buffer(data.payload_raw, 'base64').toString()
-    console.log(payload_raw);
     var payload = JSON.parse(payload_raw.replace(/\\"/g, '"'));
     console.log(payload);
-    console.log(new Buffer(data.payload_raw, 'base64').toString());
+    addPin(payload, deviceId);
 });
 
 
