@@ -50,7 +50,7 @@ function getPins(req, res, next) {
 
     session
         .run(query)
-        .then(function (result)) {
+        .then(function (result) {
 
             var results = [];
             var count = 0;
