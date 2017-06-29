@@ -19,13 +19,13 @@ driver.onError = function (error) {
   console.log('Neo4j driver instantiation failed', error);
 };
 
-function addPin(data, deviceId) {
+function addPin(data, udid) {
     var session = driver.session();
     session
-      .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: deviceId, datetime: getDateTime()})
+      .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: udid, datetime: getDateTime()})
       .subscribe({
         onNext: function (record) {
-          console.log(record.get('lat'));
+          console.log(record.get('p'));
         },
         onCompleted: function () {
           session.close();
@@ -176,11 +176,11 @@ client.on('error', function(err) {
 
 client.on('message', function(deviceId, data) {
     console.info('[INFO] ', 'Message:', deviceId, JSON.stringify(data, null, 2));
-    console.log(deviceId);
     var payload_raw = new Buffer(data.payload_raw, 'base64').toString()
     var payload = JSON.parse(payload_raw.replace(/\\"/g, '"'));
+    var udid = data.hardware_serial;
     console.log(payload);
-    addPin(payload, deviceId);
+    addPin(payload, udid);
 });
 
 
