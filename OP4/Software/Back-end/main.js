@@ -143,8 +143,8 @@ server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS());                                         // Used for allowing Access-Control-Allow-Origin
 
 // Server endpoints
-server.get('/get/pins/', getPinsResponse);                          // Return all pins
-server.get('/get/pins/:responded', getPinsResponse);                // Return all pins that are unresponded (False) to or have been responded to (True)
+server.get('/get/pins/', getPin);                          // Return all pins
+server.get('/get/pins/:responded', getPin);                // Return all pins that are unresponded (False) to or have been responded to (True)
 server.get(/.*/, restify.serveStatic({                              // Files are made accessible to the user, HTML index page is made default
     'directory': __dirname + '/../Front-end/',
     'default': 'index.html'
