@@ -24,16 +24,15 @@ function addPin(data, udid) {
     var session = driver.session();
     session
         .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: udid, datetime: getDateTime()})
-        .subscribe({
-            onNext: function (record) {
-              console.log(record.get('p'));
-            },
-            onCompleted: function () {
-              session.close();
-            },
-            onError: function (error) {
-              console.log(error);
-            }
+        .then(function (result) {
+            result.records.forEach(function (record) {
+                console.log("Added Pin: " + record);
+            });
+            session.close();
+        })
+        .catch(function (error) {
+            console.log(error);
+            session.close();
         });
 }
 
