@@ -27,9 +27,9 @@ function initMap() {
 
             if(safeProcess(data)) {
                 // Iterates over the list and adds its contents to the map as markers if they are valid
-                for (var pin_raw in data.result.result) {
-
-                    var pin = pin_raw._fields[0].properties;
+                for (i = 0; i < data.result.length; i++) {
+                    
+                    var pin = data.result.result[i]._fields[0].properties;
                     if (intactPin(pin)) {
 
                         // Create the Marker
