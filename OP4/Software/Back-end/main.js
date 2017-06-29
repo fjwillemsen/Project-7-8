@@ -22,18 +22,56 @@ driver.onError = function (error) {
 function addPin(data, udid) {
     var session = driver.session();
     session
-      .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: udid, datetime: getDateTime()})
-      .subscribe({
-        onNext: function (record) {
-          console.log(record.get('p'));
-        },
-        onCompleted: function () {
-          session.close();
-        },
-        onError: function (error) {
-          console.log(error);
+        .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: udid, datetime: getDateTime()})
+        .subscribe({
+            onNext: function (record) {
+              console.log(record.get('p'));
+            },
+            onCompleted: function () {
+              session.close();
+            },
+            onError: function (error) {
+              console.log(error);
+            }
+        });
+}
+
+function getPin(req, res, next) {
+    var session = driver.session();
+    var query = 'MATCH (p:Pin) RETURN p'
+
+    // if a parameter is supplied, use it in the query
+    if (req.params) {
+        if (typeof req.params.responded != "undefined") {
+            query = 'MATCH (p:Pin { responded: ' + req.params.responded + '}) RETURN p';
         }
-    });
+    }
+
+    session
+        .run(query)
+        .subscribe({
+            onNext: function (record) {
+                console.log(record.get('p'));
+                res.send(200, {
+                    ok: 'yes',
+                    query: query,
+                    result: record.get('p')
+                });
+            },
+            onCompleted: function () {
+                session.close();
+            },
+            onError: function (error) {
+                console.log(error);
+                res.send(200, {
+                    ok: 'no',
+                    query: query,
+                    error: error
+                });
+            }
+        });
+
+    return next();
 }
  
 
@@ -51,129 +89,26 @@ function isEmpty(obj) {
 }
 
 
-    // Query Parsers
-
-
-// Parses a Pin Create query
-function parsePin(lat, long, udid) {
-    var query = 'CREATE (p:Pin { '
-    query += 'lat: ' + lat + ','
-    query += 'long: ' + long + ','
-    query += 'udid: ' + udid + ','
-    query += 'datetime: ' + getDateTime() + ','
-    query += 'responded: ' + false
-    return query + '}) RETURN p;'
-}
-
-// Parses a Pin Responded
-function parseResponded(args) {
-    if(!isEmpty(args)) {
-        return 'MATCH (p:Pin { responded: ' + args.responded + ' }) RETURN p';
-    } else {
-        return 'MATCH (p:Pin) RETURN p';
-    }
-}
-
-
-
-
-    // Responders
-
-
-// Prepares the query to add the pin to the database
-function addPinResponse(req, res, next) {
-    console.log(req.params);
-    var data = req.params;
-    var query = parsePin(data.lat, data.long, data.uuid);
-    setData(query, res);
-    return next();
-}
-
-// Prepares the query to get the pins from the database
-function getPinsResponse(req, res, next) {
-    var query = parseResponded(req.params);
-    getData(query, res);
-    return next();
-}
-
-
-    // Database
-
-
-// Executes a Create-query
-function setData(query, res) {
-    db.cypherQuery(query, function(err, result) {
-        if(err) {
-            res.send(200, {
-                ok: 'no',
-                query: query,
-                error: err
-            }); throw err;
-        } 
-
-        else {
-            res.send(200, {
-                ok: 'yes',
-                query: query
-            });
-        }
-    });
-}
-
-// Gets data from the database using a query and returns a result as a list
-function getData(query, res) {
-    db.cypherQuery(query, function (err, results) {
-        if(err) {
-            res.send(200, {
-                ok: 'no',
-                query: query,
-                error: err
-            }); throw err;
-        }
-
-        var result = results.data;
-
-        if (result.length == 0) {
-            res.send(200, {
-                ok: 'no',
-                query: query,
-                error: err
-            }); throw err;
-        } else {
-
-            var data = result[0];
-            var response = {
-                ok: 'yes',
-                query: query,
-                length: result.length
-            };
-
-            for (var i = result.length - 1; i >= 0; i--) {
-                response[i] = result[i];
-            }
-
-            res.send(200, response);
-        }
-    });
-}
-
-
 
     // LoRa Receiver
     
+// Login    
 var region = 'eu';
 var appID = 'sosbutton';
 var accessKey = 'ttn-account-v2._OUW0ngQcd2i81hAvn6deR3gKj_RIPTQ-U8RvWf5pRk';
 var client = new ttn.Client(region, appID, accessKey);
 
+// If connection
 client.on('connect', function(connack) {
     console.log('[DEBUG]', 'Connect:', connack);
-});
-    
+});   
+
+// If error
 client.on('error', function(err) {
     console.error('[ERROR]', err.message);
 });
 
+// Receives a message
 client.on('message', function(deviceId, data) {
     console.info('[INFO] ', 'Message:', deviceId, JSON.stringify(data, null, 2));
     var payload_raw = new Buffer(data.payload_raw, 'base64').toString()
@@ -188,7 +123,6 @@ client.on('message', function(deviceId, data) {
 
     // Server
 
-
 // Set the port number that's included in the launch arguments, if it is
 var port = 8081;
 if(process.argv[2] && process.argv[2] != '') {
@@ -202,18 +136,13 @@ var server = restify.createServer({
     certificate: fs.readFileSync('/var/www/project78/.well-known/acme-challenge/server.crt', 'utf8')
 });
 
+// Server features
 server.use(restify.authorizationParser());
 server.use(restify.bodyParser());                                   // Used for parsing the Request body
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS());                                         // Used for allowing Access-Control-Allow-Origin
 
-server.post('/add/pins', addPinResponse);                           // Add a new pin to the database
-server.post("/testpost", function(req, res, next) {                 // Test a post-endpoint
-    console.log(req.body);
-    console.log(req.params);
-    res.send(200, { ok: 'yes' });
-});
-
+// Server endpoints
 server.get('/get/pins/', getPinsResponse);                          // Return all pins
 server.get('/get/pins/:responded', getPinsResponse);                // Return all pins that are unresponded (False) to or have been responded to (True)
 server.get(/.*/, restify.serveStatic({                              // Files are made accessible to the user, HTML index page is made default
