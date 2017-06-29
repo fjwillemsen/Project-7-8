@@ -1,172 +1,6 @@
 var ip = window.location.hostname;
 var port = window.location.port;
 
-var json =  
-[
-  {
-    "keys": [
-      "p"
-    ],
-    "length": 1,
-    "_fields": [
-      {
-        "identity": {
-          "low": 15,
-          "high": 0
-        },
-        "labels": [
-          "Pin"
-        ],
-        "properties": {
-          "datetime": "20170629114358",
-          "udid": "0004A30B001B3855",
-          "lat": 51.2,
-          "long": 3.9,
-          "responded": false
-        }
-      }
-    ],
-    "_fieldLookup": {
-      "p": 0
-    }
-  },
-  {
-    "keys": [
-      "p"
-    ],
-    "length": 1,
-    "_fields": [
-      {
-        "identity": {
-          "low": 16,
-          "high": 0
-        },
-        "labels": [
-          "Pin"
-        ],
-        "properties": {
-          "datetime": "20170629114358",
-          "udid": "0004A30B001B3855",
-          "lat": 51.2,
-          "long": 3.9,
-          "responded": false
-        }
-      }
-    ],
-    "_fieldLookup": {
-      "p": 0
-    }
-  },
-  {
-    "keys": [
-      "p"
-    ],
-    "length": 1,
-    "_fields": [
-      {
-        "identity": {
-          "low": 17,
-          "high": 0
-        },
-        "labels": [
-          "Pin"
-        ],
-        "properties": {
-          "datetime": "20170629115706",
-          "udid": "0004A30B001B3855",
-          "lat": 51.2,
-          "long": 3.9,
-          "responded": false
-        }
-      }
-    ],
-    "_fieldLookup": {
-      "p": 0
-    }
-  },
-  {
-    "keys": [
-      "p"
-    ],
-    "length": 1,
-    "_fields": [
-      {
-        "identity": {
-          "low": 18,
-          "high": 0
-        },
-        "labels": [
-          "Pin"
-        ],
-        "properties": {
-          "datetime": "20170629115707",
-          "udid": "0004A30B001B3855",
-          "lat": 51.2,
-          "long": 3.9,
-          "responded": false
-        }
-      }
-    ],
-    "_fieldLookup": {
-      "p": 0
-    }
-  },
-  {
-    "keys": [
-      "p"
-    ],
-    "length": 1,
-    "_fields": [
-      {
-        "identity": {
-          "low": 19,
-          "high": 0
-        },
-        "labels": [
-          "Pin"
-        ],
-        "properties": {
-          "datetime": "20170629122080",
-          "udid": "0004A30B001B3855",
-          "lat": 51.2,
-          "long": 3.9,
-          "responded": false
-        }
-      }
-    ],
-    "_fieldLookup": {
-      "p": 0
-    }
-  },
-  {
-    "keys": [
-      "p"
-    ],
-    "length": 1,
-    "_fields": [
-      {
-        "identity": {
-          "low": 20,
-          "high": 0
-        },
-        "labels": [
-          "Pin"
-        ],
-        "properties": {
-          "datetime": "20170629122081",
-          "udid": "0004A30B001B3855",
-          "lat": 51.2,
-          "long": 3.9,
-          "responded": false
-        }
-      }
-    ],
-    "_fieldLookup": {
-      "p": 0
-    }
-  }
-]
-
 // Initializes the map, sets pins to user location and received pins
 function initMap() {
     $.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?') 
@@ -191,40 +25,35 @@ function initMap() {
             });
             position.setMap(map);
 
-            console.log(data);
-
             if(safeProcess(data)) {
                 // Iterates over the list and adds its contents to the map as markers if they are valid
-                var i = data.length - 1;
-                for (i; i >= 0; i--) {
-                    let pin = data[i];
-                    if (pin) {
-                        console.log(pin);
-                        if (intactPin(pin)) {
+                for (var pin_raw in data.result.result) {
 
-                            // Create the Marker
-                            let pincoords = new google.maps.LatLng(pin.lat, pin.long)
-                            let color = pinColor(pin.responded);
+                    var pin = pin_raw._fields[0].properties;
+                    if (intactPin(pin)) {
 
-                            let infowindow = new google.maps.InfoWindow({
-                              content: pinInfo(pin.udid, pin.datetime)
-                            });
+                        // Create the Marker
+                        let pincoords = new google.maps.LatLng(pin.lat, pin.long)
+                        let color = pinColor(pin.responded);
 
-                            let marker = new google.maps.Marker({
-                                position: pincoords,
-                                // label: {text: pin.udid.toString(), color: "white"},
-                                map: map,
-                                icon: {
-                                    path: google.maps.SymbolPath.CIRCLE,
-                                    strokeColor: color,
-                                    scale: 7
-                                }
-                            });
+                        let infowindow = new google.maps.InfoWindow({
+                            content: pinInfo(pin.udid, pin.datetime)
+                        });
 
-                            marker.addListener('click', function() {
-                              infowindow.open(map, marker);
-                            });
-                        }
+                        let marker = new google.maps.Marker({
+                            position: pincoords,
+                            // label: {text: pin.udid.toString(), color: "white"},
+                            map: map,
+                            icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                strokeColor: color,
+                                scale: 7
+                            }
+                        });
+
+                        marker.addListener('click', function() {
+                            infowindow.open(map, marker);
+                        });
                     }
                 }
             }
