@@ -67,7 +67,7 @@ function getPins(req, res, next) {
             });
 
             session.close();
-        }
+        })
         .catch(function (error) {
             console.log(error);
             res.send(200, {
