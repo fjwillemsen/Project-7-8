@@ -1,6 +1,172 @@
 var ip = window.location.hostname;
 var port = window.location.port;
 
+var json =  
+[
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "identity": {
+          "low": 15,
+          "high": 0
+        },
+        "labels": [
+          "Pin"
+        ],
+        "properties": {
+          "datetime": "20170629114358",
+          "udid": "0004A30B001B3855",
+          "lat": 51.2,
+          "long": 3.9,
+          "responded": false
+        }
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  },
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "identity": {
+          "low": 16,
+          "high": 0
+        },
+        "labels": [
+          "Pin"
+        ],
+        "properties": {
+          "datetime": "20170629114358",
+          "udid": "0004A30B001B3855",
+          "lat": 51.2,
+          "long": 3.9,
+          "responded": false
+        }
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  },
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "identity": {
+          "low": 17,
+          "high": 0
+        },
+        "labels": [
+          "Pin"
+        ],
+        "properties": {
+          "datetime": "20170629115706",
+          "udid": "0004A30B001B3855",
+          "lat": 51.2,
+          "long": 3.9,
+          "responded": false
+        }
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  },
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "identity": {
+          "low": 18,
+          "high": 0
+        },
+        "labels": [
+          "Pin"
+        ],
+        "properties": {
+          "datetime": "20170629115707",
+          "udid": "0004A30B001B3855",
+          "lat": 51.2,
+          "long": 3.9,
+          "responded": false
+        }
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  },
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "identity": {
+          "low": 19,
+          "high": 0
+        },
+        "labels": [
+          "Pin"
+        ],
+        "properties": {
+          "datetime": "20170629122080",
+          "udid": "0004A30B001B3855",
+          "lat": 51.2,
+          "long": 3.9,
+          "responded": false
+        }
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  },
+  {
+    "keys": [
+      "p"
+    ],
+    "length": 1,
+    "_fields": [
+      {
+        "identity": {
+          "low": 20,
+          "high": 0
+        },
+        "labels": [
+          "Pin"
+        ],
+        "properties": {
+          "datetime": "20170629122081",
+          "udid": "0004A30B001B3855",
+          "lat": 51.2,
+          "long": 3.9,
+          "responded": false
+        }
+      }
+    ],
+    "_fieldLookup": {
+      "p": 0
+    }
+  }
+]
+
 // Initializes the map, sets pins to user location and received pins
 function initMap() {
     $.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?') 

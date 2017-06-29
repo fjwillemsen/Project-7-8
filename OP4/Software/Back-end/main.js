@@ -5,6 +5,7 @@ var moment = require('moment');
 var ttn = require('ttn');
 fs = require('fs');
 
+    // Process settings
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";     // Temporary fix to allow self-signed certificates (not very secure), avoids "DEPTH_ZERO_SELF_SIGNED_CERT"
 process.on('uncaughtException', function (err) {    // Catch all Exceptions here to avoid crashing, log them instead
   console.log('Caught exception: ' + err.stack);
@@ -61,7 +62,7 @@ function getPin(req, res, next) {
                 res.send(200, {
                     ok: 'no',
                     query: query,
-                    error: 'closed'
+                    error: 'no result'
                 });
                 session.close();
             },
