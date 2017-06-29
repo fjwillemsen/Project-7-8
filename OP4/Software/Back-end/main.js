@@ -37,7 +37,7 @@ function addPin(data, udid) {
         });
 }
 
-function getPin(req, res, next) {
+function getPins(req, res, next) {
     var session = driver.session();
     var query = 'MATCH (p:Pin) RETURN p'
 
@@ -50,30 +50,31 @@ function getPin(req, res, next) {
 
     session
         .run(query)
-        .subscribe({
-            onNext: function (record) {
-                res.send(200, {
-                    ok: 'yes',
-                    query: query,
-                    result: record
-                });
-            },
-            onCompleted: function () {
-                res.send(200, {
-                    ok: 'no',
-                    query: query,
-                    error: 'no result'
-                });
-                session.close();
-            },
-            onError: function (error) {
-                console.log(error);
-                res.send(200, {
-                    ok: 'no',
-                    query: query,
-                    error: error
-                });
-            }
+        .then(function (result)) {
+
+            var results = [];
+            var count = 0;
+            result.records.forEach(function (record) {
+                results[count] = record;
+                count++;
+            });
+
+            var final = { result: results, length: count };
+            res.send(200, {
+                ok: 'yes',
+                query: query,
+                result: final
+            });
+
+            session.close();
+        }
+        .catch(function (error) {
+            console.log(error);
+            res.send(200, {
+                ok: 'no',
+                query: query,
+                error: error
+            });
         });
 
     return next();
@@ -148,8 +149,8 @@ server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS());                                         // Used for allowing Access-Control-Allow-Origin
 
 // Server endpoints
-server.get('/get/pins/', getPin);                          // Return all pins
-server.get('/get/pins/:responded', getPin);                // Return all pins that are unresponded (False) to or have been responded to (True)
+server.get('/get/pins/', getPins);                                  // Return all pins
+server.get('/get/pins/:responded', getPins);                        // Return all pins that are unresponded (False) to or have been responded to (True)
 server.get(/.*/, restify.serveStatic({                              // Files are made accessible to the user, HTML index page is made default
     'directory': __dirname + '/../Front-end/',
     'default': 'index.html'
