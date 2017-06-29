@@ -25,14 +25,14 @@ function addPin(data, udid) {
     session
         .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: udid, datetime: getDateTime()})
         .then(function (result) {
+            session.close();
             result.records.forEach(function (record) {
                 console.log("Added Pin: " + record);
             });
-            session.close();
         })
         .catch(function (error) {
-            console.log(error);
             session.close();
+            console.log(error);
         });
 }
 
