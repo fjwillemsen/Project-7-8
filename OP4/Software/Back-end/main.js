@@ -13,7 +13,7 @@ process.on('uncaughtException', function (err) {    // Catch all Exceptions here
     // Connects to the database
 var driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "project78SSMF"));
 driver.onCompleted = function () {
-  console.log(driver);
+  console.log('Neo4j driver instantiation succeeded');
 };
 driver.onError = function (error) {
   console.log('Neo4j driver instantiation failed', error);
@@ -51,14 +51,18 @@ function getPin(req, res, next) {
         .run(query)
         .subscribe({
             onNext: function (record) {
-                console.log(record.get('p'));
                 res.send(200, {
                     ok: 'yes',
                     query: query,
-                    result: record.get('p')
+                    result: record
                 });
             },
             onCompleted: function () {
+                res.send(200, {
+                    ok: 'no',
+                    query: query,
+                    error: 'closed'
+                });
                 session.close();
             },
             onError: function (error) {
