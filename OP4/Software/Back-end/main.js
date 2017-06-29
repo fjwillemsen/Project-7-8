@@ -11,7 +11,7 @@ process.on('uncaughtException', function (err) {    // Catch all Exceptions here
 });
 
     // Connects to the database
-var driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("neo4j", "neo4j"));
+var driver = neo4j.driver("bolt://xtremeresq.ddns.net:7687", neo4j.auth.basic("neo4j", "prject78SSMF"));
 driver.onCompleted = function () {
   console.log(driver);
 };
