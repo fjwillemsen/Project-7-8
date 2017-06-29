@@ -23,7 +23,7 @@ driver.onError = function (error) {
 function addPin(data, udid) {
     var session = driver.session();
     session
-        .run('CREATE (p:Pin {lat : ' + data.lat + ', long: ' +  data.long + ', udid: ' + udid + ', datetime: ' + getDateTime() + ', responded: false }) RETURN p')
+        .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: udid, datetime: getDateTime()})
         .then(function (result) {
             result.records.forEach(function (record) {
                 console.log("Added Pin: " + record);
