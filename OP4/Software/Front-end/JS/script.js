@@ -32,14 +32,12 @@ function initMap() {
                     var pin = data.result.result[i]._fields[0].properties;
                     if (intactPin(pin)) {
 
-                        console.log(pinInfo(pin.udid, pin.datetime, pin.checked));
-
                         // Create the Marker
                         let pincoords = new google.maps.LatLng(pin.lat, pin.long)
                         let color = pinColor(pin.responded);
 
                         let infowindow = new google.maps.InfoWindow({
-                            content: pinInfo(pin.udid, pin.datetime, pin.checked)
+                            content: pinInfo(pin.udid, pin.datetime, pin.responded)
                         });
 
                         let marker = new google.maps.Marker({
