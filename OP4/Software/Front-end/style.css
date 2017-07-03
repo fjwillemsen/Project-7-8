@@ -68,7 +68,8 @@ a {
 /* Toggle */
 
 #toggle {
-	padding: 5px;
+	padding: 10px;
+	padding-right: 0px;
 }
 
 .switch {

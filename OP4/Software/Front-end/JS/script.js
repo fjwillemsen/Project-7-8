@@ -108,7 +108,7 @@ function pinInfo(udid, datetime, checked) {
                     pinInfoCheckbox(checked) +
                     '<div class="slider round"></div>' +
                 '</label>' +
-              '<p>Responded</p>' +
+              '<label>Responded</label>' +
             '</div>'
 }
 
