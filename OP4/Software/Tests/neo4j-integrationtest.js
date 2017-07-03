@@ -20,7 +20,7 @@ driver.onError = function (error) {
     // Test Procedure
 
 testDataCount(0);
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 10; i++) {
     testAddData();
     testReturnData();
     testDataCount(i+1);

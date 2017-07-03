@@ -67,6 +67,10 @@ a {
 
 /* Toggle */
 
+#toggle {
+	padding: 5px;
+}
+
 .switch {
   position: relative;
   display: inline-block;

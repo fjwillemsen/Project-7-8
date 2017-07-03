@@ -37,7 +37,7 @@ function initMap() {
                         let color = pinColor(pin.responded);
 
                         let infowindow = new google.maps.InfoWindow({
-                            content: pinInfo(pin.udid, pin.datetime)
+                            content: pinInfo(pin.udid, pin.datetime, pin.responded)
                         });
 
                         let marker = new google.maps.Marker({
@@ -95,17 +95,21 @@ function pinColor(responded) {
 
 function respondedToggle() {
     var toggle = document.getElementById("responded");
-    console.log(toggle.value);
+    console.log(toggle.checked);
 }
 
 // Creates a string for the pin info window
-function pinInfo(udid, datetime) {
+function pinInfo(udid, datetime, checked) {
     return  '<p>UDID: <b>' + udid + '</b></p>' +
             '<p>Time: <b>' + parseTime(datetime) + '</b></p>' +
             '<p>Date: <b>' + parseDate(datetime) + '</b></p>' +
             '<div id=\'toggle\'>' +
                 '<label class="switch">' +
-                    '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox">' +
+                    if (checked) {
+                        '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox" checked>' +
+                    } else {
+                        '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox">' +
+                    }
                 '<div class="slider round"></div>' +
               '</label>' +
               '<p>Responded</p>' +
