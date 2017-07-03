@@ -104,11 +104,11 @@ function pinInfo(udid, datetime, checked) {
             '<p>Time: <b>' + parseTime(datetime) + '</b></p>' +
             '<p>Date: <b>' + parseDate(datetime) + '</b></p>' +
             '<div id=\'toggle\'>' +
+                '<label>Responded</label>' +
                 '<label class="switch">' +
                     pinInfoCheckbox(checked) +
                     '<div class="slider round"></div>' +
                 '</label>' +
-              '<label>Responded</label>' +
             '</div>'
 }
 
