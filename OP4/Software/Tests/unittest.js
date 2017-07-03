@@ -5,7 +5,7 @@ var assert = require('assert');
 describe('Date Time getter', function() {
     describe('getDateTime()', function() {
         it('should return current date and time in YYYYMMDDHHmmSS format', function() {
-        assert.equal(14, getDateTime().length);
+            assert.equal(14, getDateTime().length);
         });
     });
 });
@@ -18,8 +18,8 @@ describe('Empty Checker', function() {
         });
 
         it('should return false if not empty', function() {
-            var object = { hello: "world" };
-            assert.equal(true, isEmpty(object));
+            var object = { length: 1 };
+            assert.equal(false, isEmpty(object));
         });
     });
 });
@@ -31,7 +31,5 @@ function getDateTime() {
 
 // Returns true if empty, false if not
 function isEmpty(obj) {
-    return Object.keys(obj).length === 0;
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
 }
-
-

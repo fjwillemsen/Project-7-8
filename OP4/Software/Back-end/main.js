@@ -8,22 +8,22 @@ fs = require('fs');
     // Process settings
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";     // Temporary fix to allow self-signed certificates (not very secure), avoids "DEPTH_ZERO_SELF_SIGNED_CERT"
 process.on('uncaughtException', function (err) {    // Catch all Exceptions here to avoid crashing, log them instead
-  console.log('Caught exception: ' + err.stack);
+    console.log('Caught exception: ' + err.stack);
 });
 
     // Connects to the database
 var driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "project78SSMF"));
 driver.onCompleted = function () {
-  console.log('Neo4j driver instantiation succeeded');
+    console.log('Neo4j driver instantiation succeeded');
 };
 driver.onError = function (error) {
-  console.log('Neo4j driver instantiation failed', error);
+    console.log('Neo4j driver instantiation failed', error);
 };
 
 function addPin(data, udid) {
     var session = driver.session();
     session
-        .run('CREATE (p:Pin {lat : {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: udid, datetime: getDateTime()})
+        .run('CREATE (p:Pin {lat: {lat}, long: {long}, udid: {udid}, datetime: {datetime}, responded: false }) RETURN p', {lat: data.lat, long: data.long, udid: udid, datetime: getDateTime()})
         .then(function (result) {
             session.close();
             result.records.forEach(function (record) {
