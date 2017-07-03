@@ -37,7 +37,7 @@ function initMap() {
                         let color = pinColor(pin.responded);
 
                         let infowindow = new google.maps.InfoWindow({
-                            content: pinInfo(pin.udid, pin.datetime, pin.responded)
+                            content: pinInfo(pin.udid, pin.datetime, pin.checked)
                         });
 
                         let marker = new google.maps.Marker({
@@ -105,15 +105,19 @@ function pinInfo(udid, datetime, checked) {
             '<p>Date: <b>' + parseDate(datetime) + '</b></p>' +
             '<div id=\'toggle\'>' +
                 '<label class="switch">' +
-                    if (checked) {
-                        '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox" checked>' +
-                    } else {
-                        '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox">' +
-                    }
-                '<div class="slider round"></div>' +
-              '</label>' +
+                    pinInfoCheckbox(checked) +
+                    '<div class="slider round"></div>' +
+                '</label>' +
               '<p>Responded</p>' +
             '</div>'
+}
+
+function pinInfoCheckbox(checked) {
+    if (checked) {
+        return '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox" checked >'
+    } else {
+        return '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox">'
+    }
 }
 
 // Parses the date
