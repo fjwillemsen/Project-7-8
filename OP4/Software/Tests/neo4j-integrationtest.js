@@ -8,7 +8,7 @@ process.on('uncaughtException', function (err) {    // Catch all Exceptions here
 });
 
     // Connects to the database
-var driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "admin"));
+var driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "project78SSMF"));
 driver.onCompleted = function () {
     // console.log('Neo4j driver instantiation succeeded');
 };
