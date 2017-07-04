@@ -169,9 +169,25 @@ function pinColor(responded) {
     }
 }
 
-function respondedToggle(udid) {
+function respondedToggle() {
     var toggle = document.getElementById("responded");
     console.log(toggle.checked);
+
+    var data = { udid: 'hello world' };
+    var url = 'https://' + ip + ':' + port + '/set/pins/responded'; 
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: JSON.stringify(data),
+        datatype: 'json',
+        contentType: "application/x-www-form-urlencoded",
+        success: function(data) {
+            console.log(data);
+        },
+        error: function() { }
+    });
+
+    initMap();
 }
 
 // Creates a string for the pin info window
@@ -189,10 +205,11 @@ function pinInfo(udid, datetime, checked) {
 }
 
 function pinInfoCheckbox(checked, udid) {
+    console.log(udid);
     if (checked) {
-        return '<input id=\'responded\' onclick=\'respondedToggle(' + udid + ')\' type="checkbox" checked >'
+        return '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox" checked >'
     } else {
-        return '<input id=\'responded\' onclick=\'respondedToggle(' + udid + ')\' type="checkbox">'
+        return '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox">'
     }
 }
 
