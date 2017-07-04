@@ -28,7 +28,7 @@ describe('Get Pins Test', function() {
     });
     it('should return correct body.query', function(done) {
         request.get('https://xtremeresq.ddns.net:8081/get/pins', {json: true}, function(err, res, body) {
-            assert.equal(body.query, 'MATCH (p:Pin) RETURN p');
+            assert.equal(body.query, 'MATCH (p:Pin) RETURN p ORDER BY p.datetime DESC');
             done();
         });
     });
