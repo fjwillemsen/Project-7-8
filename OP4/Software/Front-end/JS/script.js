@@ -31,10 +31,12 @@ function setContentTo(file, callback) {
 
 function setMapView() {
     setContentTo('map.html');
+    initMap();
 }
 
 function setOverviewView() {
     setContentTo('overview.html');
+    getList();
 }
 
 function setContactView() {
@@ -99,6 +101,34 @@ function initMap() {
             }
         });
     });
+}
+
+// Create a list of pins
+function getList() {
+    let url = 'https://' + ip + ':' + port + '/get/pins'; 
+    $.get(url, function(data) {
+        if(safeProcess(data)) {
+
+            // Iterates over the list and adds its contents to the map as markers if they are valid
+            for (i = 0; i < data.result.length; i++) {
+                
+                var pin = data.result.result[i]._fields[0].properties;
+                if (intactPin(pin)) {
+
+                    // Create the Marker
+                    let color = pinColor(pin.responded);
+
+                    let infowindow = new google.maps.InfoWindow({
+                        content: pinInfo(pin.udid, pin.datetime, pin.responded)
+                    });
+
+                    var element = '<li style="background-color: ' + pinColor(pin.responded) + '">' + pin.udid + '<br>' + pin.datetime + '</li>'
+
+                    $('#list').append(list);
+                }
+            }
+        }
+    });    
 }
 
 // Checks if the data is okay

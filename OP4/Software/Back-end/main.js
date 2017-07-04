@@ -38,7 +38,7 @@ function addPin(data, udid) {
 
 function getPins(req, res, next) {
     var session = driver.session();
-    var query = 'MATCH (p:Pin) RETURN p'
+    var query = 'MATCH (p:Pin) RETURN p ORDER BY p.datetime DESC'
 
     // if a parameter is supplied, use it in the query
     if (req.params) {
