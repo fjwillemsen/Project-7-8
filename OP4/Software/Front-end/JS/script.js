@@ -175,17 +175,7 @@ function respondedToggle(udid) {
 
     var data = { udid: 'hello world' };
     var url = 'https://' + ip + ':' + port + '/set/pins/responded'; 
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: JSON.stringify(data),
-        datatype: 'json',
-        contentType: "application/x-www-form-urlencoded",
-        success: function(data) {
-            console.log(data);
-        },
-        error: function() { }
-    });
+    
 
     initMap();
 }
