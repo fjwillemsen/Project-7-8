@@ -78,6 +78,42 @@ function getPins(req, res, next) {
 
     return next();
 }
+
+function setPinResponded(req, res, next) {
+    var session = driver.session();
+    var data = JSON.parse(req.body.toString());
+    console.log(data);
+    session
+        .run('MATCH (p:Pin) WHERE (p.udid == {udid}) SET p.responded = {responded})', {udid: data['udid'], responded: data['responded']})
+        .then(function (result) {
+
+            var results = [];
+            var count = 0;
+            result.records.forEach(function (record) {
+                results[count] = record;
+                count++;
+            });
+
+            var final = { result: results, length: count };
+            res.send(200, {
+                ok: 'yes',
+                query: query,
+                result: final
+            });
+
+            session.close();
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.send(200, {
+                ok: 'no',
+                query: query,
+                error: error
+            });
+        });
+
+    return next();
+}
  
 
 
@@ -146,6 +182,8 @@ server.use(restify.authorizationParser());
 server.use(restify.bodyParser());                                   // Used for parsing the Request body
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.CORS());                                         // Used for allowing Access-Control-Allow-Origin
+
+server.post('/set/pin/responded', setPinResponded);                 // Set the responded to the parameter
 
 // Server endpoints
 server.get('/get/pins/', getPins);                                  // Return all pins
