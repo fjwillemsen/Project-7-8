@@ -172,11 +172,11 @@ function pinColor(responded) {
     }
 }
 
-function respondedToggle() {
+function respondedToggle(id) {
     var toggle = document.getElementById("responded");
     console.log(toggle.checked);
 
-    var data = { udid: 'hello world' };
+    var data = { udid: id, responded: toggle.checked };
     var url = 'https://' + ip + ':' + port + '/set/pin/responded'; 
     $.ajax({
         url: url,
