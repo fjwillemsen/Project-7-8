@@ -177,7 +177,7 @@ function respondedToggle() {
     console.log(toggle.checked);
 
     var data = { udid: 'hello world' };
-    var url = 'https://' + ip + ':' + port + '/set/pins/responded'; 
+    var url = 'https://' + ip + ':' + port + '/set/pin/responded'; 
     $.ajax({
         url: url,
         type: 'POST',
