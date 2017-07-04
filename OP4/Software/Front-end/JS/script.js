@@ -23,6 +23,7 @@ function setContentTo(file, callback) {
     var url = 'Views/' + file;
     $.get(url, function(data) {
         $('#content').html(data);
+        console.log(data);
         if(callback != undefined) {
             callback(); //This function is ran when the async .get is done
         }
