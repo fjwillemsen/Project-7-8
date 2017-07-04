@@ -172,12 +172,6 @@ function pinColor(responded) {
 function respondedToggle(udid) {
     var toggle = document.getElementById("responded");
     console.log(toggle.checked);
-
-    var data = { udid: 'hello world' };
-    var url = 'https://' + ip + ':' + port + '/set/pins/responded'; 
-    
-
-    initMap();
 }
 
 // Creates a string for the pin info window
