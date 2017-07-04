@@ -138,6 +138,11 @@ input:checked + .slider:before {
 
 	/* Views */
 
+#overview {
+	text-align: center;
+	padding: 15px;
+}
+
 #contact {
 	text-align: center;
 }

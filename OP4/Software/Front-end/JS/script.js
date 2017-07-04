@@ -122,7 +122,7 @@ function getList() {
                         content: pinInfo(pin.udid, pin.datetime, pin.responded)
                     });
 
-                    var element = '<li style="background-color: ' + pinColor(pin.responded) + '">UDID:' + pin.udid + '<br>Date:' + parseDate(pin.datetime) + ' ' + parseTime(pin.datetime) + '</li>'
+                    var element = '<li style="background-color: ' + pinColor(pin.responded) + '">UDID: ' + pin.udid + '<br>Date: ' + parseDate(pin.datetime) + ' ' + parseTime(pin.datetime) + '</li>'
                     console.log(element);
                     $('#list').append(element);
                 }
