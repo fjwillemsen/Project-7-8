@@ -117,12 +117,13 @@ function getList() {
 
                 var pin = data.result.result[i]._fields[0].properties;
                 if (intactPin(pin)) {
+                    console.log(pin);
 
                     // Create the Marker
                     let color = pinColor(pin.responded);
 
                     let infowindow = new google.maps.InfoWindow({
-                        content: pinInfo(pin.udid, pin.datetime, pin.responded)
+                        content: pinInfo(pin.udid, pin.datetime, pin.responded, pin.udid)
                     });
 
                     var element = '<li style="background-color: ' + pinColor(pin.responded) + '">UDID: ' + pin.udid + '<br>Date: ' + parseDate(pin.datetime) + ' ' + parseTime(pin.datetime) + '</li>'
@@ -191,21 +192,21 @@ function respondedToggle() {
 }
 
 // Creates a string for the pin info window
-function pinInfo(udid, datetime, checked) {
+function pinInfo(udid, datetime, checked, id) {
     return  '<p>UDID: <b>' + udid + '</b></p>' +
             '<p>Time: <b>' + parseTime(datetime) + '</b></p>' +
             '<p>Date: <b>' + parseDate(datetime) + '</b></p>' +
             '<div id=\'toggle\'>' +
                 '<label>Responded:</label>' +
                 '<label class="switch">' +
-                    pinInfoCheckbox(checked, udid) +
+                    pinInfoCheckbox(checked, id) +
                     '<div class="slider round"></div>' +
                 '</label>' +
             '</div>'
 }
 
-function pinInfoCheckbox(checked, udid) {
-    console.log(udid);
+function pinInfoCheckbox(checked, id) {
+    console.log(id);
     if (checked) {
         return '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox" checked >'
     } else {
