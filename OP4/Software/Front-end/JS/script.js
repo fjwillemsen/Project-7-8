@@ -173,7 +173,7 @@ function respondedToggle(udid) {
     var toggle = document.getElementById("responded");
     console.log(toggle.checked);
 
-    let data = { udid: udid, responded: toggle.checked }
+    let data = { udid: 'hello world' }
     let url = 'https://' + ip + ':' + port + '/set/pins/responded'; 
     $.ajax({
         url: url,

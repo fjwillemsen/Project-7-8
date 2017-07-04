@@ -81,35 +81,19 @@ function getPins(req, res, next) {
 
 function setPinResponded(req, res, next) {
     var session = driver.session();
+    console.log(req);
+    console.log(res);
     var data = JSON.parse(req.body.toString());
     console.log(data);
     session
-        .run('MATCH (p:Pin) WHERE (p.udid == {udid}) SET p.responded = {responded})', {udid: data['udid'], responded: data['responded']})
+        .run('MATCH (p:Pin) WHERE (p.udid == {udid}) SET p.responded = responded)', {udid: data['udid']})
         .then(function (result) {
-
-            var results = [];
-            var count = 0;
-            result.records.forEach(function (record) {
-                results[count] = record;
-                count++;
-            });
-
-            var final = { result: results, length: count };
-            res.send(200, {
-                ok: 'yes',
-                query: query,
-                result: final
-            });
-
             session.close();
+            console.log(result);
         })
         .catch(function (error) {
+            session.close();
             console.log(error);
-            res.send(200, {
-                ok: 'no',
-                query: query,
-                error: error
-            });
         });
 
     return next();
