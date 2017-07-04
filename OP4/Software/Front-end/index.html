@@ -2,7 +2,7 @@
 <head>
     <title>XtremeResQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <!-- <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300" rel="stylesheet"/> -->
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300" rel="stylesheet"/>
     <link rel="shortcut icon" type="image/x-icon" href="/Visuals/favicon.ico"/>
     <link rel="stylesheet" href="style.css" />
 
@@ -19,11 +19,14 @@
 
 <body>
 <div id="head">
+    <div id="background-div">
+        <img id="background" src="Visuals/breaking_waves_blur.jpg">
+    </div>
     <img id="logo" src="Visuals/Logo.png">
     <div id="buttonbar">
-        <a>MAP</a> -
-        <a>OVERVIEW</a> -
-        <a>CONTACT</a>
+        <a class="buttonbarbutton" onclick='setMapView()'>Map</a> -
+        <a class="buttonbarbutton" onclick='setOverviewView()'>Overview</a> -
+        <a class="buttonbarbutton" onclick='setContactView()'>Contact</a>
     </div>
 </div>
 

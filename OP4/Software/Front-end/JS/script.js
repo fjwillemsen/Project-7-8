@@ -1,6 +1,46 @@
 var ip = window.location.hostname;
 var port = window.location.port;
 
+$(document).ready(function() {
+    // Toggle selected on buttons in button bar
+    $('.buttonbarbutton').on('click', function(){
+        $('.buttonbarbutton').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    setMapView();
+    loadHeader('Visuals/breaking_waves.jpg');
+});
+
+function loadHeader(image) {
+    $("#background").one("load", function() {
+        console.log('done loading header image');
+    }).attr("src", image);
+}
+
+// Sets the content to the specified view
+function setContentTo(file, callback) {
+    var url = 'Views/' + file;
+    $.get(url, function(data) {
+        $('#content').html(data);
+        if(callback != undefined) {
+            callback(); //This function is ran when the async .get is done
+        }
+    });
+}
+
+function setMapView() {
+    setContentTo('map.html');
+}
+
+function setOverviewView() {
+    setContentTo('overview.html');
+}
+
+function setContactView() {
+    setContentTo('contact.html');
+}
+
 // Initializes the map, sets pins to user location and received pins
 function initMap() {
     $.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?') 

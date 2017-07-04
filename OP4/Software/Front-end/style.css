@@ -21,8 +21,15 @@ a {
 
 #head {
 	width: 100vw;
-	background-color: rgb(255, 150, 0);
+	height: 250px;
 	text-align: center;
+}
+
+#head #background {
+	z-index: -2;
+	position: absolute;
+	left: 0px;
+	width: 100vw;
 	height: 250px;
 }
 
@@ -31,28 +38,32 @@ a {
 }
 
 #buttonbar {
+	z-index: 2;
 	width: 100%;
 	display: inline-block;
 	padding: 20 0;
 	font-size: 2em;
 	text-align: center;
-	background-color: rgb(255, 170, 100);
+	background-color: rgba(255, 255, 255, 0.6);
 }
 
-#buttonbar a {
+.buttonbarbutton {
 	padding: 5 5;
+	text-transform: uppercase;
 }
 
-#buttonbar a:hover {
-	color: rgb(255, 150, 0);
+.buttonbarbutton:hover {
+	color: rgb(85, 146, 116);
 	border-radius: 10px;
-	background-color: black;
+	background-color: rgba(10,10,10,0.7);
 }
 
-#buttonbar a:active {
-	color: rgb(255, 170, 100);
+.buttonbarbutton.selected {
+	color: rgb(85, 146, 116);
 	border-radius: 10px;
-	background-color: rgba(0,0,0,0.3);
+	padding: 2 2;
+	margin: 3 3;
+	background-color: rgba(0,0,0,0.4);
 }
 
 #view {
@@ -122,4 +133,19 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+
+	/* Views */
+
+#contact {
+	text-align: center;
+}
+
+#contact h1 {
+	font-size: 3em;
+}
+
+#contact p {
+	font-size: 1.5em;
 }
