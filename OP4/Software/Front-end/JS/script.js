@@ -75,6 +75,8 @@ function initMap() {
                     var pin = data.result.result[i]._fields[0].properties;
                     if (intactPin(pin)) {
 
+                        console.log(pin);
+
                         // Create the Marker
                         let pincoords = new google.maps.LatLng(pin.lat, pin.long)
                         let color = pinColor(pin.responded);
