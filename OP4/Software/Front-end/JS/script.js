@@ -55,6 +55,8 @@ function initMap() {
             let coords = new google.maps.LatLng(location.latitude, location.longitude);
             let ocean = {lat: 51.9244, lng: 3.4777};
 
+            console.log(data);
+
             let mapOptions = {
               zoom: 10,
               center: coords
@@ -74,8 +76,6 @@ function initMap() {
                     
                     var pin = data.result.result[i]._fields[0].properties;
                     if (intactPin(pin)) {
-
-                        console.log(pin);
 
                         // Create the Marker
                         let pincoords = new google.maps.LatLng(pin.lat, pin.long)
