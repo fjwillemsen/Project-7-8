@@ -110,9 +110,11 @@ function getList() {
     $.get(url, function(data) {
         if(safeProcess(data)) {
 
+            var list = '<ul>';
+
             // Iterates over the list and adds its contents to the map as markers if they are valid
             for (i = 0; i < data.result.length; i++) {
-                
+
                 var pin = data.result.result[i]._fields[0].properties;
                 if (intactPin(pin)) {
 
@@ -125,9 +127,12 @@ function getList() {
 
                     var element = '<li style="background-color: ' + pinColor(pin.responded) + '">UDID: ' + pin.udid + '<br>Date: ' + parseDate(pin.datetime) + ' ' + parseTime(pin.datetime) + '</li>'
                     console.log(element);
-                    $('#list').append(element);
+                    list = list + element;
                 }
             }
+
+            console.log(list);
+            $('#list').html(list);
         }
     });    
 }
