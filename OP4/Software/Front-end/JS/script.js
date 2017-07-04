@@ -190,7 +190,7 @@ function respondedToggle(id) {
         error: function() { }
     });
 
-    // initMap();
+    initMap();
 }
 
 // Creates a string for the pin info window
