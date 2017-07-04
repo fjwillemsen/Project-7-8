@@ -83,7 +83,7 @@ function setPinResponded(req, res, next) {
     var session = driver.session();
     var data = JSON.parse(req.body.toString());
     session
-        .run('MATCH (p:Pin) WHERE (id(p) = {id}) SET p.responded = {responded}', {udid: data.id, responded: data.responded})
+        .run('MATCH (p:Pin) WHERE (id(p) = {id}) SET p.responded = {responded}', { id: data.id, responded: data.responded})
         .then(function (result) {
             session.close();
             console.log(result);
