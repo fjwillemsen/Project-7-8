@@ -190,11 +190,12 @@ function respondedToggle() {
         error: function() { }
     });
 
-    initMap();
+    // initMap();
 }
 
 // Creates a string for the pin info window
 function pinInfo(udid, datetime, checked, id) {
+    console.log(pinInfoCheckbox(checked, id));
     return  '<p>UDID: <b>' + udid + '</b></p>' +
             '<p>Time: <b>' + parseTime(datetime) + '</b></p>' +
             '<p>Date: <b>' + parseDate(datetime) + '</b></p>' +
@@ -208,11 +209,10 @@ function pinInfo(udid, datetime, checked, id) {
 }
 
 function pinInfoCheckbox(checked, id) {
-    console.log(id);
     if (checked) {
-        return '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox" checked >'
+        return '<input id=\'responded\' onclick=\'respondedToggle(' + id + ')\' type="checkbox" checked >'
     } else {
-        return '<input id=\'responded\' onclick=\'respondedToggle()\' type="checkbox">'
+        return '<input id=\'responded\' onclick=\'respondedToggle(' + id + ')\' type="checkbox">'
     }
 }
 
