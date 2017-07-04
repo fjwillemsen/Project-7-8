@@ -84,7 +84,7 @@ function setPinResponded(req, res, next) {
     var data = JSON.parse(req.body.toString());
     console.log(data);
     session
-        .run('MATCH (p:Pin) WHERE (p.udid = {udid}) SET p.responded = {responded})', {udid: data['udid'], responded: data['responded']})
+        .run('MATCH (p:Pin) WHERE (p.udid = {udid}) SET p.responded = {responded}', {udid: data['udid'], responded: data['responded']})
         .then(function (result) {
             session.close();
             console.log(result);
