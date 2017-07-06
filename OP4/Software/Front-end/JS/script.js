@@ -108,7 +108,7 @@ function initMap() {
 
 // Create a list of pins
 function getList() {
-    let url = 'https://' + ip + ':' + port + '/get/pins'; 
+    let url = 'https://' + ip + ':' + port + '/get/pins';
     $.get(url, function(data) {
         if(safeProcess(data)) {
 
@@ -128,7 +128,7 @@ function getList() {
                         content: pinInfo(pin.udid, pin.datetime, pin.responded, pin.udid)
                     });
 
-                    var element = '<li style="background-color: ' + pinColor(pin.responded) + '">UDID: ' + pin.udid + '<br>Date: ' + parseDate(pin.datetime) + ' ' + parseTime(pin.datetime) + '</li>'
+                    var element = '<div class="listelement"><div class="listcircle" style="background-color: ' + pinColor(pin.responded) + '"></div><p>UDID: ' + pin.udid + '<br>Date: ' + parseDate(pin.datetime) + ' ' + parseTime(pin.datetime) + '</p></div>'
                     console.log(element);
                     list = list + element;
                 }
