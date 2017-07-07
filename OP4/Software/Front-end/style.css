@@ -139,15 +139,17 @@ input:checked + .slider:before {
 #mapbuttons {
 	width: 100vw;
 	text-align: center;
+	background-color: rgb(85, 146, 116);
 }
 
 #mapbuttons a {
-	background-color: black;
+	background-color: rgba(0,0,0,0.5);
 	color: white;
+	padding: 5px;
 }
 
 #mapbuttons a:hover {
-	background-color: white;
+	background-color: rgba(255,255,255,0.5);
 	color: black;
 }
 

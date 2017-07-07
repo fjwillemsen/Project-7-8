@@ -48,7 +48,6 @@ function setContactView() {
 
 function initMapWithURL(murl) {
     mapurl = url + murl;
-    console.log(mapurl);
     initMap();
 }
 
