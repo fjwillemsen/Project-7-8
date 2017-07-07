@@ -136,6 +136,21 @@ input:checked + .slider:before {
 
 	/* Views */
 
+#mapbuttons {
+	width: 100vw;
+	text-align: center;
+}
+
+#mapbuttons a {
+	background-color: black;
+	color: white;
+}
+
+#mapbuttons a:hover {
+	background-color: white;
+	color: black;
+}
+
 #overview {
 	text-align: center;
 	padding: 15px;
