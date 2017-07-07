@@ -1,5 +1,7 @@
 var ip = window.location.hostname;
 var port = window.location.port;
+var url = 'https://' + ip + ':' + port;
+var mapurl = url + '/get/pins';
 
 $(document).ready(function() {
     // Toggle selected on buttons in button bar
@@ -44,13 +46,17 @@ function setContactView() {
     setContentTo('contact.html');
 }
 
+function initMapWithURL(murl) {
+    var mapurl = url + murl;
+    initMap();
+}
+
 // Initializes the map, sets pins to user location and received pins
 function initMap() {
     $.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?') 
     .done (function(location) {
-
-        let url = 'https://' + ip + ':' + port + '/get/pins'; 
-        $.get(url, function(data) {
+ 
+        $.get(mapurl, function(data) {
 
             let coords = new google.maps.LatLng(location.latitude, location.longitude);
             let ocean = {lat: 51.9244, lng: 3.4777};
